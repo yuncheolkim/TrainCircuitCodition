@@ -110,6 +110,9 @@ local function regEvent()
         local stopTrain = global.stopTrans[train.id]
         if stopTrain then
             local oldSched = deepcopy(stopTrain.train.schedule)
+            if not oldSched then
+                return
+            end
             
             local removeCircuitCondition = oldSched.records[stopTrain.record]
             if not removeCircuitCondition then

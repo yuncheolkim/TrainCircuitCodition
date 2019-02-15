@@ -17,12 +17,10 @@ function deepcopy(orig)
     if orig_type == 'table' then
         copy = {}
         for orig_key, orig_value in next, orig, nil do
-            log(orig_key.." ")
             copy[deepcopy(orig_key)] = deepcopy(orig_value)
         end
         setmetatable(copy, deepcopy(getmetatable(orig)))
     else -- number, string, boolean, etc
-        log(orig)
         copy = orig
     end
     return copy

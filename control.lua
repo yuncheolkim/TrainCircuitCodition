@@ -1,5 +1,5 @@
 
-isDebug = true
+isDebug = false
 local band = bit32.band
 function _print(msg)
     if isDebug then
@@ -86,7 +86,6 @@ local function regEvent()
             local i = 0
             local isM = bit32.band(signalBit, 1) == 1
             local isN = bit32.band(signalBit, 2) == 2
-            -- N signal
             
             for key, v in pairs(oldRecord.wait_conditions) do
                 if not isSameCircuit(v, WaitCondition) and not isSameCircuit(v, waitConditionOr) then
@@ -94,7 +93,6 @@ local function regEvent()
                     if i == 0 then
                         
                         table.insert(wait_conditions, v)
-                        -- M signal
                         if isM then
                             table.insert(wait_conditions, WaitCondition)
                         end
@@ -206,12 +204,7 @@ local function regEvent()
                 
             end
             
-            if stopedTrain.signalBit ~= signalBit then
-                -- 新加了N
-                if bit32.band(signalBit, 2) == 2 and bit32.band(stopedTrain.signalBit, 2) ~= 2 then
-                    NewScheduleRecord(stopedTrain.train, signalBit)
-                end
-                
+            if stopedTrain.signalBit ~= signalBit then                
                 -- 设置为手动
                 _print("添加信号 ")
                 stopedTrain.signalBit = signalBit
@@ -260,9 +253,6 @@ script.on_load(function ()
 end)
 
 script.on_init(function()
-    if not global.Tick then
-        log("tick null")
-    end
     
     log("开始")
     -- variable

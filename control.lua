@@ -130,6 +130,9 @@ local function regEvent()
     function RecalcScheduleRecord(train, signalBit)
         local stopTrain = global.stopTrans[train.id]
         if stopTrain then
+            if not stopTrain.train.valid then
+                return
+            end
             local oldSched = deepcopy(stopTrain.train.schedule)
             if not oldSched then
                 return
@@ -184,6 +187,10 @@ local function regEvent()
         if trainState == 2 then
             _print("火车离开站台 重新计算信号!! ")
             RecalcScheduleRecord(stopedTrain.train, 0)
+            return
+        end
+
+        if not stopedTrain.station.valid then
             return
         end
         

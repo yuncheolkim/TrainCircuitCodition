@@ -130,7 +130,8 @@ local function regEvent()
     function RecalcScheduleRecord(train, signalBit)
         local stopTrain = global.stopTrans[train.id]
         if stopTrain then
-            if not stopTrain.train.valid then
+            if not stopTrain.train.valid or not stopTrain.station.valid then
+                global.stopTrans[train.id] = nil
                 return
             end
             local oldSched = deepcopy(stopTrain.train.schedule)
@@ -191,6 +192,7 @@ local function regEvent()
         end
 
         if not stopedTrain.station.valid then
+            global.stopTrans[train.id] = nil
             return
         end
         
